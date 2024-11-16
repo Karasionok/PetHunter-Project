@@ -13,7 +13,7 @@ def home():
     body = mapObj.get_root().html.render()
     script = mapObj.get_root().script.render()
 
-    return render_template("index.html", header=header, body=body, script=script)
+    return render_template("register.html", header=header, body=body, script=script)
 
 
 if __name__ == '__main__':

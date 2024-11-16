@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <title>PetHunter</title>
+    <style>
+    </style>
+</head>
+<body>
+    <header>
+      <nav class="navbar">
+        <div class="navdiv">
+          <div class="logo"><a href="#">PetHunter</a> </div>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contacts</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+      <div class="main">
+          <h1>PetHunter</h1>
+
+          <form action="">
+              <label for="first" class="loginlabel">
+                  Username:
+              </label>
+              <input type="text" id="first" name="first"
+                  placeholder="Enter your Username" required>
+
+              <label for="password" class="loginlabel">
+                  Password:
+              </label>
+              <input type="password" id="password" name="password"
+                  placeholder="Enter your Password" required>
+              <label for="first" class="loginlabel">
+                  Name:
+              </label>
+              <input type="text" id="fio" name="fio"
+                  placeholder="Enter your real full name" required>
+              <label for="first" class="loginlabel">
+                  Phone:
+              </label>
+              <input type="text" id="phone" name="phone"
+                  placeholder="Enter your phone number" required>\
+              <label for="first" class="loginlabel">
+                  Area:
+              </label>
+              <input type="text" id="area" name="area"
+                  placeholder="Enter your area" required>
+              <div class="wrap">
+                  <button type="submit" class="submitbutton">
+                      Submit
+                  </button>
+              </div>
+          </form>
+
+          <p>Have account?
+              <a href="#" style="text-decoration: none;">
+                  Sign in
+              </a>
+          </p>
+      </div>
+</body>
+</html>
