@@ -13,7 +13,17 @@ def home():
     body = mapObj.get_root().html.render()
     script = mapObj.get_root().script.render()
 
-    return render_template("register.html", header=header, body=body, script=script)
+    return render_template("index.html", header=header, body=body, script=script)
+
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 
 if __name__ == '__main__':
