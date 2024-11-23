@@ -23,17 +23,17 @@
       <div class="main">
           <h1>PetHunter</h1>
 
-          <form action="">
-              <label for="first" class="loginlabel">
+          <form action="{{ url_for('login') }}" method="POST">
+              <label for="lg" class="loginlabel">
                   Username:
               </label>
-              <input type="text" id="first" name="first"
+              <input type="text" id="lg" name="lg"
                   placeholder="Enter your Username" required>
 
-              <label for="password" class="loginlabel">
+              <label for="ps" class="loginlabel">
                   Password:
               </label>
-              <input type="password" id="password" name="password"
+              <input type="password" id="ps" name="ps"
                   placeholder="Enter your Password" required>
 
               <div class="wrap">
