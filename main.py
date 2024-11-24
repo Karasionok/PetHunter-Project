@@ -3,22 +3,29 @@ from flask import Flask, render_template, request, redirect
 import folium
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, migrate
+from sqlalchemy import *
+from sqlalchemy.sql.sqltypes import NullType
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
+Base = declarative_base()
+metadata = Base.metadata
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DataBase.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB/PetHunt.sqlite'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    login = db.Column(db.String(20), unique=False, nullable=False)
-    password = db.Column(db.String(20), unique=False, nullable=False)
-    full_name = db.Column(db.String(20), unique=False, nullable=False)
-    phone = db.Column(db.String(20), unique=False, nullable=False)
-    district = db.Column(db.String(20), nullable=False)
+    __tablename__ = 'user'
 
+    user_id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String)
+    login = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    phone = db.Column(db.String, nullable=False)
+    district = db.Column(db.String, nullable=False)
 
 
 @app.route("/")
@@ -26,7 +33,9 @@ class User(db.Model):
 def home():
     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
     folium.GeoJson("shukino.geojson").add_to(mapObj)
-    mapObj.add_child(folium.ClickForMarker())
+    popup1 = folium.LatLngPopup()
+    mapObj.add_child(popup1)
+    # print(popup1.getLat())
     mapObj.get_root().render()
     header = mapObj.get_root().header.render()
     body = mapObj.get_root().html.render()
@@ -44,8 +53,8 @@ def register():
         ds = request.form['ds']
         if log != '' and pas != '':
             print(log, pas, fio, phone, ds)
-            user = User(login=log, password=pas, full_name=fio, phone=phone, district=ds)
-            db.session.add(user)
+            usr = User(login=log, password=pas, full_name=fio, phone=phone, district=ds)
+            db.session.add(usr)
             db.session.commit()
         return redirect('/index')
     else:

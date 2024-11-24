@@ -6,10 +6,10 @@ from models import User
 
 """
 Для автоматической генерации модели можно использовать утилиту sqlacodegen.
-sqlacodegen sqlite:///DB/DataBase.sqlite > models.py
+sqlacodegen sqlite:/// > models.py
 """
 
-engine = create_engine('sqlite:///DB/DataBase.sqlite')
+engine = create_engine('')
 
 Session = sessionmaker(bind=engine)
 session = Session()
