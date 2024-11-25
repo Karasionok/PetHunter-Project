@@ -14,7 +14,6 @@ metadata = Base.metadata
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB/PetHunt.sqlite'
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 
 class User(db.Model):
@@ -35,7 +34,6 @@ def home():
     folium.GeoJson("shukino.geojson").add_to(mapObj)
     popup1 = folium.LatLngPopup()
     mapObj.add_child(popup1)
-    # print(popup1.getLat())
     mapObj.get_root().render()
     header = mapObj.get_root().header.render()
     body = mapObj.get_root().html.render()
