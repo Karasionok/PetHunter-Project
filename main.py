@@ -1,30 +1,16 @@
-import flask
+import flask        # Libraries for WEB page
 from flask import Flask, render_template, request, redirect
-import folium
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, migrate
-from sqlalchemy import *
-from sqlalchemy.sql.sqltypes import NullType
-from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-metadata = Base.metadata
+import folium       # Libraries for map
+
+from sqlalchemy import create_engine    # Libraries for DataBase
+from sqlalchemy.orm import Session
+
+from models.sqlmodels import User         # Imports from other files
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB/PetHunt.sqlite'
-db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    __tablename__ = 'user'
-
-    user_id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String)
-    login = db.Column(db.String, nullable=False)
-    password = db.Column(db.String, nullable=False)
-    phone = db.Column(db.String, nullable=False)
-    district = db.Column(db.String, nullable=False)
+engine = create_engine("sqlite:///DB/PetHunt.db")
 
 
 @app.route("/")
@@ -51,9 +37,16 @@ def register():
         ds = request.form['ds']
         if log != '' and pas != '':
             print(log, pas, fio, phone, ds)
-            usr = User(login=log, password=pas, full_name=fio, phone=phone, district=ds)
-            db.session.add(usr)
-            db.session.commit()
+            with Session(engine) as session:
+                usr = User(
+                    full_name = fio,
+                    login = log,
+                    password = pas,
+                    phone = phone,
+                    district = ds
+                )
+                session.add(usr)
+                session.commit()
         return redirect('/index')
     else:
         return render_template("register.html")
