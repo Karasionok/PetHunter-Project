@@ -13,7 +13,7 @@ app = Flask(__name__)
 engine = create_engine("sqlite:///DB/PetHunt.db", echo=True)    # page initial
 
 
-@app.route("/")         # Main Page
+@app.route("/")         #TODO: Main Page
 @app.route("/index")
 def home():
     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
@@ -29,27 +29,29 @@ def home():
 
 @app.route("/register", methods=["POST", "GET"])        # register page
 def register():
-    if flask.request.method == "POST":
-        log = request.form['login']
-        pas = request.form['password']
-        fio = request.form['fio']
-        phone = request.form['phone']
-        ds = request.form['area']
-        if log is not None and pas is not None:
-            print(log, pas, fio, phone, ds)
-            with Session(engine) as session:
-                usr = User(
-                    full_name = fio,
-                    login = log,
-                    password = pas,
-                    phone = phone,
-                    district = ds
-                )
-                session.add(usr)
-                session.commit()
-        return redirect('/index')
-    else:
-        return render_template("register.html")
+    with Session(engine) as session:
+        if flask.request.method == "POST":
+            log = request.form['login']
+            pas = request.form['password']
+            fio = request.form['fio']
+            phone = request.form['phone']
+            ds = request.form['area']
+            if log is not None and pas is not None and fio is not None and phone is not None and ds is not None:
+                stmt = select(User).where(User.login.in_(["log"]))
+                for user in session.scalars(stmt):
+                    print(user)
+                    usr = User(
+                        full_name = fio,
+                        login = log,
+                        password = pas,
+                        phone = phone,
+                        district = ds
+                    )
+                    session.add(usr)
+                    session.commit()
+            return redirect('/index')
+        else:
+            return render_template("register.html")
 
 
 @app.route("/login", methods=["POST", "GET"])           # login page
@@ -57,12 +59,11 @@ def login():
     if flask.request.method == "POST":
         log = request.form['log']
         pas = request.form['pas']
-        print(log, pas)
         with Session(engine) as session:
-            stmt = select(User).where(User.login.in_(["log"]))
-            for user in session.scalars(stmt):
-                print(user)
-        return redirect('/index')
+            for db_data in session.query(User.login, User.password).all():
+                if str(db_data[0]) == log and str(db_data[1]) == pas:
+                    print(1)
+                    break
     else:
         return render_template("login.html")
 
