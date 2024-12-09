@@ -30,11 +30,11 @@ def home():
 @app.route("/register", methods=["POST", "GET"])        # register page
 def register():
     if flask.request.method == "POST":
-        log = request.form['lg']
-        pas = request.form['ps']
+        log = request.form['login']
+        pas = request.form['password']
         fio = request.form['fio']
         phone = request.form['phone']
-        ds = request.form['ds']
+        ds = request.form['area']
         if log is not None and pas is not None:
             print(log, pas, fio, phone, ds)
             with Session(engine) as session:
@@ -69,6 +69,8 @@ def login():
 
 @app.route("/add", methods=["POST", "GET"])         # add page
 def add():
+    if flask.request.method == "POST":
+        pass
     return render_template("add.html")
 
 

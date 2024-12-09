@@ -18,14 +18,15 @@
         </div>
       </nav>
     </header>
-    <form action="{{ url_for('login') }}" method="POST">
+    <div class="main">
+        <form action="{{ url_for('login') }}" method="POST">
               <label for="myfile" class="loginlabel">
                   Photos:
               </label>
               <input type="file" id="myfile" name="myfile" multiple>
 
               <label for="type" class="loginlabel">
-                  Gender:
+                  Type:
               </label>
               <input type="text" id="type" name="type"
                   placeholder="Enter pet`s type" required>
@@ -59,6 +60,7 @@
                       Submit
                   </button>
               </div>
-    </form>
+        </form>
+    </div>
 </body>
 </html>
