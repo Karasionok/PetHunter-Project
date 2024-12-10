@@ -7,6 +7,7 @@ from sqlalchemy import String
 class Base(DeclarativeBase):
     pass
 
+
 class User(Base):
     __tablename__ = "user"
     user_id: Mapped[int] = mapped_column(primary_key=True)

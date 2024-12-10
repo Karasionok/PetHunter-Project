@@ -59,11 +59,14 @@ def login():
     if flask.request.method == "POST":
         log = request.form['log']
         pas = request.form['pas']
+        print(log, pas)
         with Session(engine) as session:
-            for db_data in session.query(User.login, User.password).all():
-                if str(db_data[0]) == log and str(db_data[1]) == pas:
-                    print(1)
-                    break
+            user_log = session.query(User.login).filter(User.login == log).first()
+            user_pas = session.query(User.password).filter(User.login == log).first()
+            print(str(user_log[0]), str(user_pas[0]))
+            if str(user_log[0]) == log and str(user_pas[0]) == pas:
+                return redirect('/index')
+            return render_template('login.html')
     else:
         return render_template("login.html")
 
