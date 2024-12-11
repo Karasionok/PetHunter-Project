@@ -1,10 +1,13 @@
 import flask        # Libraries for WEB page
 from flask import Flask, render_template, request, redirect
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 import folium       # Libraries for map
+from folium.plugins import MousePosition
 
 from sqlalchemy import create_engine, select    # Libraries for DataBase
 from sqlalchemy.orm import Session
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from models.sqlmodels import User         # Imports from other files
 
@@ -18,8 +21,17 @@ engine = create_engine("sqlite:///DB/PetHunt.db", echo=True)    # page initial
 def home():
     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
     folium.GeoJson("shukino.geojson").add_to(mapObj)
-    popup1 = folium.LatLngPopup()
-    mapObj.add_child(popup1)
+    formatter = "function(num) {return L.Util.formatNum(num, 3) + ' º ';};"
+    MousePosition(
+        position="topright",
+        separator=" | ",
+        empty_string="NaN",
+        lng_first=True,
+        num_digits=20,
+        prefix="Coordinates:",
+        lat_formatter=formatter,
+        lng_formatter=formatter,
+    ).add_to(mapObj)
     mapObj.get_root().render()
     header = mapObj.get_root().header.render()
     body = mapObj.get_root().html.render()
@@ -43,7 +55,7 @@ def register():
                     usr = User(
                         full_name = fio,
                         login = log,
-                        password = pas,
+                        password = generate_password_hash(pas),
                         phone = phone,
                         district = ds
                     )
@@ -61,10 +73,9 @@ def login():
         pas = request.form['pas']
         print(log, pas)
         with Session(engine) as session:
-            user_log = session.query(User.login).filter(User.login == log).first()
-            user_pas = session.query(User.password).filter(User.login == log).first()
-            print(str(user_log[0]), str(user_pas[0]))
-            if str(user_log[0]) == log and str(user_pas[0]) == pas:
+            user = session.query(User).filter(User.login == log).first()
+            print(user.login, user.password)
+            if str(user.login) == log and str(user.password) == pas:
                 return redirect('/index')
             return render_template('login.html')
     else:
