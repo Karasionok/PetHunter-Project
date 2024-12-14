@@ -96,3 +96,17 @@ input {
     justify-content: center;
     align-items: center;
 }
+#mySidenav a {
+  position: absolute;
+  left: -80px; /* Позиционировать за пределами экрана */
+  transition: 0.3s; /* Добавить переход при наведении */
+  padding: 15px;
+  width: 100px; /* Установить определённую ширину */
+  text-decoration: none; /* Удалить подчёркивание */
+  font-size: 20px; /* Увеличить размер шрифта */
+  color: black; /* Черный цвет текста */
+  border-radius: 0 5px 5px 0; /* Округлые углы на правой верхней и нижней правой стороне */
+}
+#mySidenav a:hover {
+  left: 0; /* При наведении мыши делать элементы видимыми правильно */
+}

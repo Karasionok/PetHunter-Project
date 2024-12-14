@@ -52,6 +52,10 @@ def register():
             return render_template("register.html")
 
 
+@app.route("/proba", methods=["POST", "GET"])
+def proba():
+    return render_template("SAiti.html")
+
 @app.route("/login", methods=["POST", "GET"])           # login page
 def login():
     if flask.request.method == "POST":
