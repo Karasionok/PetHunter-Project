@@ -56,6 +56,7 @@ def register():
 def proba():
     return render_template("SAiti.html")
 
+
 @app.route("/login", methods=["POST", "GET"])           # login page
 def login():
     if flask.request.method == "POST":
@@ -73,26 +74,31 @@ def login():
 
 @app.route("/add", methods=["POST", "GET"])         # add page
 def add():
-    anns = session.query(ann).all()
-    os.makedirs(f"announcements/{len(anns) + 1}_ann/templates")
-    return render_template("add.html")
-
-
-@app.route("/add_start_marker", methods=["POST", "GET"])
-def add_marker():
     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
-    if flask.request.method == "GET":
-        folium.GeoJson("shukino.geojson").add_to(mapObj)
-        mapObj.add_child(ClickForMarker())
-        mapObj.get_root().render()
-        header = mapObj.get_root().header.render()
-        body = mapObj.get_root().html.render()
-        script = mapObj.get_root().script.render()
-    if flask.request.method == "POST":
-        anns = session.query(ann).all()
-        mapObj.save(f'announcements/{len(anns) + 1}_ann/templates/map.html')
-        return redirect('/index')
-    return render_template("start_marker.html", header=header, body=body, script=script)
+    folium.GeoJson("shukino.geojson").add_to(mapObj)
+    mapObj.add_child(ClickForMarker())
+    mapObj.get_root().render()
+    header = mapObj.get_root().header.render()
+    body = mapObj.get_root().html.render()
+    script = mapObj.get_root().script.render()
+    return render_template("add.html", header=header, body=body, script=script)
+
+
+# @app.route("/add_start_marker", methods=["POST", "GET"])
+# def add_marker():
+#     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
+#     if flask.request.method == "GET":
+#         folium.GeoJson("shukino.geojson").add_to(mapObj)
+#         mapObj.add_child(ClickForMarker())
+#         mapObj.get_root().render()
+#         header = mapObj.get_root().header.render()
+#         body = mapObj.get_root().html.render()
+#         script = mapObj.get_root().script.render()
+#     if flask.request.method == "POST":
+#         anns = session.query(ann).all()
+#         mapObj.save(f'announcements/{len(anns) + 1}_ann/templates/map.html')
+#         return redirect('/index')
+#     return render_template("start_marker.html", header=header, body=body, script=script)
 
 
 if __name__ == '__main__':

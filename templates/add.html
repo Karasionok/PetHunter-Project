@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
   <title>Add_Ann</title>
+    {{header|safe}}
 </head>
 <body>
     <header>
@@ -18,51 +19,65 @@
         </div>
       </nav>
     </header>
-    <div class="main">
-        <form action="{{ url_for('login') }}" method="POST">
-              <label for="myfile" class="loginlabel">
-                  Photos:
-              </label>
-              <input type="file" id="myfile" name="myfile" multiple>
+    <table>
+    <tr>
+        <td width="50%">
+            <div>
+            {{body|safe}}
+            <script>
+                {{script|safe}}
+            </script>
+            </div>
+        </td>
+        <td width="50%">
+            <div class="main">
+                <form action="{{ url_for('login') }}" method="POST">
+                      <label for="myfile" class="loginlabel">
+                          Photos:
+                      </label>
+                      <input type="file" id="myfile" name="myfile" multiple>
 
-            <button type="button"><a href="/add_start_marker">добавить маркер</a></button>
+                    <button type="button"><a href="/add_start_marker">добавить маркер</a></button>
 
-              <label for="type" class="loginlabel">
-                  Type:
-              </label>
-              <input type="text" id="type" name="type"
-                  placeholder="Enter pet`s type" required>
+                      <label for="type" class="loginlabel">
+                          Type:
+                      </label>
+                      <input type="text" id="type" name="type"
+                          placeholder="Enter pet`s type" required>
 
-              <label for="gender" class="loginlabel">
-                  Gender:
-              </label>
-              <input type="text" id="gender" name="gender"
-                  placeholder="Enter pet`s gender" required>
+                      <label for="gender" class="loginlabel">
+                          Gender:
+                      </label>
+                      <input type="text" id="gender" name="gender"
+                          placeholder="Enter pet`s gender" required>
 
-              <label for="breed" class="loginlabel">
-                  Breed:
-              </label>
-              <input type="text" id="breed" name="breed"
-                  placeholder="Enter pet`s breed" required>
+                      <label for="breed" class="loginlabel">
+                          Breed:
+                      </label>
+                      <input type="text" id="breed" name="breed"
+                          placeholder="Enter pet`s breed" required>
 
-              <label for="nickname" class="loginlabel">
-                  Nickname:
-              </label>
-              <input type="text" id="nickname" name="nickname"
-                  placeholder="Enter pet`s nickname" required>
+                      <label for="nickname" class="loginlabel">
+                          Nickname:
+                      </label>
+                      <input type="text" id="nickname" name="nickname"
+                          placeholder="Enter pet`s nickname" required>
 
-              <label for="diffs" class="loginlabel">
-                  Differences:
-              </label>
-              <input type="text" id="diffs" name="diffs"
-                  placeholder="Enter pet`s differences" required>
+                      <label for="diffs" class="loginlabel">
+                          Differences:
+                      </label>
+                      <input type="text" id="diffs" name="diffs"
+                          placeholder="Enter pet`s differences" required>
 
-              <div class="wrap">
-                  <button type="submit" class="submitbutton">
-                      Submit
-                  </button>
-              </div>
-        </form>
-    </div>
+                      <div class="wrap">
+                          <button type="submit" class="submitbutton">
+                              Submit
+                          </button>
+                      </div>
+                </form>
+            </div>
+            </td>
+    </tr>
+    </table>
 </body>
 </html>
