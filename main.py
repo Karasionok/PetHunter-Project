@@ -35,21 +35,17 @@ def register():
         phone = request.form['phone']
         ds = request.form['area']
         if log is not None and pas is not None and fio is not None and phone is not None and ds is not None:
-            stmt = select(User).where(User.login.in_(["log"]))
-            for user in session.scalars(stmt):
-                print(user)
-                usr = User(
-                    full_name = fio,
-                    login = log,
-                    password = generate_password_hash(pas),
-                    phone = phone,
-                    district = ds
-                )
-                session.add(usr)
-                session.commit()
+            usr = User(
+                full_name = fio,
+                login = log,
+                password = generate_password_hash(pas),
+                phone = phone,
+                district = ds
+            )
+            session.add(usr)
+            session.commit()
             return redirect('/index')
-        else:
-            return render_template("register.html")
+    return render_template("register.html")
 
 
 @app.route("/proba", methods=["POST", "GET"])
