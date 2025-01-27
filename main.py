@@ -2,7 +2,7 @@ import os
 
 import flask        # Libraries for WEB page
 from flask import Flask, render_template, request, redirect
-from bs4 import BeautifulSoup
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 
 import folium       # Libraries for map
 from folium import ClickForMarker
@@ -16,19 +16,25 @@ from models.announ_model import Annoucement as ann
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'supersecretkey'
 engine = create_engine("sqlite:///DB/PetHunt.db", echo=True)    # page initial
 session = Session(engine)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 @app.route("/")         #TODO: Main Page
 @app.route("/index")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", current_user=current_user)
 
 
 @app.route("/register", methods=["POST", "GET"])        # register page
 def register():
     if flask.request.method == "POST":
+        if session.query(User).filter(User.login == request.form['login']).first():
+            return render_template('register.html', title='Регистрация',
+                                   message="Такой пользователь уже есть")
         log = request.form['login']
         pas = request.form['password']
         fio = request.form['fio']
@@ -58,44 +64,31 @@ def login():
     if flask.request.method == "POST":
         log = request.form['log']
         pas = request.form['pas']
-        print(log, pas)
         user = session.query(User).filter(User.login == log).first()
-        print(user.login, user.password)
-        if str(user.login) == log and str(user.password) == pas:
+        if user and check_password_hash(str(user.password), pas):
+            login_user(user)
+            print(current_user.is_authenticated)
             return redirect('/index')
         return render_template('login.html')
     else:
         return render_template("login.html")
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return session.query(User).get(user_id)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
 @app.route("/add", methods=["POST", "GET"])         # add page
 def add():
-    mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
-    folium.GeoJson("shukino.geojson").add_to(mapObj)
-    mapObj.add_child(ClickForMarker())
-    mapObj.get_root().render()
-    header = mapObj.get_root().header.render()
-    body = mapObj.get_root().html.render()
-    script = mapObj.get_root().script.render()
-    return render_template("add.html", header=header, body=body, script=script)
-
-
-# @app.route("/add_start_marker", methods=["POST", "GET"])
-# def add_marker():
-#     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
-#     if flask.request.method == "GET":
-#         folium.GeoJson("shukino.geojson").add_to(mapObj)
-#         mapObj.add_child(ClickForMarker())
-#         mapObj.get_root().render()
-#         header = mapObj.get_root().header.render()
-#         body = mapObj.get_root().html.render()
-#         script = mapObj.get_root().script.render()
-#     if flask.request.method == "POST":
-#         anns = session.query(ann).all()
-#         mapObj.save(f'announcements/{len(anns) + 1}_ann/templates/map.html')
-#         return redirect('/index')
-#     return render_template("start_marker.html", header=header, body=body, script=script)
+    return render_template("add.html")
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    app.run(port=8080, host='127.0.0.1', debug=True)

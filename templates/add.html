@@ -19,26 +19,12 @@
         </div>
       </nav>
     </header>
-    <table>
-    <tr>
-        <td width="50%">
-            <div>
-            {{body|safe}}
-            <script>
-                {{script|safe}}
-            </script>
-            </div>
-        </td>
-        <td width="50%">
             <div class="main">
                 <form action="{{ url_for('login') }}" method="POST">
                       <label for="myfile" class="loginlabel">
                           Photos:
                       </label>
                       <input type="file" id="myfile" name="myfile" multiple>
-
-                    <button type="button"><a href="/add_start_marker">добавить маркер</a></button>
-
                       <label for="type" class="loginlabel">
                           Type:
                       </label>
@@ -76,8 +62,5 @@
                       </div>
                 </form>
             </div>
-            </td>
-    </tr>
-    </table>
 </body>
 </html>

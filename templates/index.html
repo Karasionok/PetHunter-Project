@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <title>PetHunter</title>
-    {{header|safe}}
 </head>
 <body>
     <header>
@@ -15,15 +14,18 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contacts</a></li>
-            <button class="signbutton"><a href="/login">Sign In</a></button>
-            <button class="signbutton"><a href="/register">Sign Up</a></button>
+              {% if current_user.is_authenticated %}
+                <li><a href="#">{{ current_user.name }}</a></li>
+              {% else %}
+                <button class="signbutton"><a href="/login">Sign In</a></button>
+                <button class="signbutton"><a href="/register">Sign Up</a></button>
+              {% endif %}
           </ul>
         </div>
       </nav>
     </header>
-    {{body|safe}}
-    <script>
-        {{script|safe}}
-    </script>
+<div>
+    <button><a href="/add">Добавить объявление</a></button>
+</div>
 </body>
 </html>
