@@ -26,6 +26,15 @@
     </header>
 <div>
     <button><a href="/add">Добавить объявление</a></button>
+    {% for ann in anns %}
+    <div>
+        <a> {{ ann["type"] }} </a>
+        <a> {{ ann["nickname"] }} </a>
+        <a> {{ ann["breed"] }} </a>
+        <a> {{ ann["gender"] }} </a>
+        <a> {{ ann["differences"] }} </a>
+    </div>
+    {% endfor %}
 </div>
 </body>
 </html>

@@ -12,8 +12,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from models.user_model import User         # Imports from other files
-from models.announ_model import Annoucement as ann
-
+from models.announ_model import Annoucement as ann, Annoucement
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
@@ -26,7 +25,10 @@ login_manager.init_app(app)
 @app.route("/")         #TODO: Main Page
 @app.route("/index")
 def home():
-    return render_template("index.html", current_user=current_user)
+    anns = []
+    for announ in session.query(Annoucement).all():
+        anns.append(announ)
+    return render_template("index.html", current_user=current_user, anns=anns)
 
 
 @app.route("/register", methods=["POST", "GET"])        # register page
@@ -87,6 +89,22 @@ def logout():
 
 @app.route("/add", methods=["POST", "GET"])         # add page
 def add():
+    if flask.request.method == "POST":
+        type = request.form['type']
+        gender = request.form['gender']
+        breed = request.form['breed']
+        nickname = request.form['nickname']
+        diffs = request.form['diffs']
+        announ = ann(
+            breed=breed,
+            nickname=nickname,
+            gender=gender,
+            differences=diffs,
+            type=type
+        )
+        session.add(announ)
+        session.commit()
+        return redirect('/index')
     return render_template("add.html")
 
 
