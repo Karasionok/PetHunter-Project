@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from models.user_model import User         # Imports from other files
+from models.announ_model import Annoucement as ann, Annoucement
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 
 
@@ -32,7 +33,10 @@ def load_user(user_id):
 @app.route("/")         #TODO: Main Page
 @app.route("/index")
 def home():
-    return render_template("index.html")
+    anns = []
+    for announ in session.query(Annoucement).all():
+        anns.append(announ)
+    return render_template("index.html", current_user=current_user, anns=anns)
 
 @app.route("/logout")
 @login_required
@@ -44,6 +48,9 @@ def logout():
 @app.route("/register", methods=["POST", "GET"])        # register page
 def register():
     if flask.request.method == "POST":
+        if session.query(User).filter(User.login == request.form['login']).first():
+            return render_template('register.html', title='Регистрация',
+                                   message="Такой пользователь уже есть")
         log = request.form['login']
         pas = request.form['password']
         fio = request.form['fio']
@@ -63,7 +70,7 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST", "GET"])           # login page
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -89,31 +96,23 @@ def login():
 
 @app.route("/add", methods=["POST", "GET"])         # add page
 def add():
-    mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
-    folium.GeoJson("shukino.geojson").add_to(mapObj)
-    mapObj.add_child(ClickForMarker())
-    mapObj.get_root().render()
-    header = mapObj.get_root().header.render()
-    body = mapObj.get_root().html.render()
-    script = mapObj.get_root().script.render()
-    return render_template("add.html", header=header, body=body, script=script)
-
-
-# @app.route("/add_start_marker", methods=["POST", "GET"])
-# def add_marker():
-#     mapObj = folium.Map(location=[55.800595, 37.473519], zoom_start=14)
-#     if flask.request.method == "GET":
-#         folium.GeoJson("shukino.geojson").add_to(mapObj)
-#         mapObj.add_child(ClickForMarker())
-#         mapObj.get_root().render()
-#         header = mapObj.get_root().header.render()
-#         body = mapObj.get_root().html.render()
-#         script = mapObj.get_root().script.render()
-#     if flask.request.method == "POST":
-#         anns = session.query(ann).all()
-#         mapObj.save(f'announcements/{len(anns) + 1}_ann/templates/map.html')
-#         return redirect('/index')
-#     return render_template("start_marker.html", header=header, body=body, script=script)
+    if flask.request.method == "POST":
+        type = request.form['type']
+        gender = request.form['gender']
+        breed = request.form['breed']
+        nickname = request.form['nickname']
+        diffs = request.form['diffs']
+        announ = ann(
+            breed=breed,
+            nickname=nickname,
+            gender=gender,
+            differences=diffs,
+            type=type
+        )
+        session.add(announ)
+        session.commit()
+        return redirect('/index')
+    return render_template("add.html")
 
 
 if __name__ == '__main__':
