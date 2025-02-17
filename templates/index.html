@@ -27,16 +27,19 @@
       </nav>
     </header>
 <div>
-    <button><a href="/add">Добавить объявление</a></button>
     {% for ann in anns %}
-    <div>
-        <a> {{ ann["type"] }} </a>
-        <a> {{ ann["nickname"] }} </a>
-        <a> {{ ann["breed"] }} </a>
-        <a> {{ ann["gender"] }} </a>
-        <a> {{ ann["differences"] }} </a>
+    <div class="main">
+        <img src="static/photo_2024-12-14_13-26-26.jpg" width="150" height=auto>
+        <p> Type: {{ ann["type"] }} </p>
+        <p> Nickname: {{ ann["nickname"] }} </p>
+        <p> Breed: {{ ann["breed"] }} </p>
+        <p> Gender: {{ ann["gender"] }} </p>
+        <p> Differences: {{ ann["differences"] }} </p>
+        <button class="submitbutton"> Open Map </button>
     </div>
     {% endfor %}
+    <button class="submitbutton"><a href="/add">Добавить объявление</a></button>
+
 </div>
 </body>
 </html>

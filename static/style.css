@@ -44,13 +44,15 @@
     font-size: 15px;
 }
 .main {
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     padding: 10px 20px;
     transition: transform 0.2s;
     width: 500px;
     text-align: center;
     margin: 0 auto;
-}
+}z
 
 h1 {
     color: #4CAF50;
