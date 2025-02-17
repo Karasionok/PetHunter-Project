@@ -1,3 +1,4 @@
+from flask_login import UserMixin
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.testing.schema import mapped_column
@@ -8,7 +9,7 @@ class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
+class User(Base, UserMixin):
     __tablename__ = "user"
     user_id: Mapped[int] = mapped_column(primary_key=True)
     full_name: Mapped[str] = mapped_column(String())
@@ -16,4 +17,7 @@ class User(Base):
     password: Mapped[str] = mapped_column(String())
     phone: Mapped[str] = mapped_column(String())
     district: Mapped[str] = mapped_column(String())
+
+    def get_id(self):
+        return str(self.user_id)
 

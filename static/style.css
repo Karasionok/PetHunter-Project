@@ -66,6 +66,15 @@ loginlabel {
     color: #555;
     font-weight: bold;
 }
+.rm {
+    display: inline-block;
+    width: auto;
+    margin-right: 5px;
+}
+
+label[for="rm"] {
+    display: inline-block;
+}
 
 input {
     display: block;
@@ -109,3 +118,4 @@ input {
 #mySidenav a:hover {
   left: 0; /* При наведении мыши делать элементы видимыми правильно */
 }
+
