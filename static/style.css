@@ -38,11 +38,13 @@
     padding: 5px;
     width: 90px;
 }
-    button a{
+
+button a {
     color: white;
     font-weight: bold;
     font-size: 15px;
 }
+
 .main {
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
