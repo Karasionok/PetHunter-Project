@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-    <title>PetHunter</title>
-    {{header|safe}}
-</head>
-<body>
-    <header>
-      <nav class="navbar">
-        <div class="navdiv">
-          <div class="logo"><a href="#">PetHunter</a> </div>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contacts</a></li>
-            {% if current_user.is_authenticated %}
-                <li>{{ current_user.full_name }}</li>
-                <button class="signbutton"><a href="{{ url_for('logout') }}">Выйти</a></button>
-            {% else %}
-                <button class="signbutton"><a href="/login">Sign In</a></button>
-                <button class="signbutton"><a href="/register">Sign Up</a></button>
-            {% endif %}
-          </ul>
-        </div>
-      </nav>
-    </header>
+{% extends "base.html" %}
+{% block title %}Главная страница{% endblock %}
+{% block content %}
 <div>
     {% for ann in anns %}
     <div class="main">
@@ -39,7 +14,5 @@
     </div>
     {% endfor %}
     <button class="submitbutton"><a href="/add">Добавить объявление</a></button>
-
 </div>
-</body>
-</html>
+{% endblock %}

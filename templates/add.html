@@ -1,66 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-  <title>Add_Ann</title>
-    {{header|safe}}
-</head>
-<body>
-    <header>
-      <nav class="navbar">
-        <div class="navdiv">
-          <div class="logo"><a href="#">PetHunter</a> </div>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contacts</a></li>
-          </ul>
+{% extends "base.html" %}
+{% block title %}Добавить объявление{% endblock %}
+{% block content %}
+<div class="main">
+    <form action="{{ url_for('add') }}" method="POST">
+        <label for="myfile" class="loginlabel">
+            Photos:
+        </label>
+        <input type="file" id="myfile" name="myfile" multiple>
+        <label for="type" class="loginlabel">
+            Type:
+        </label>
+        <input type="text" id="type" name="type"
+               placeholder="Enter pet`s type" required>
+
+        <label for="gender" class="loginlabel">
+            Gender:
+        </label>
+        <input type="text" id="gender" name="gender"
+               placeholder="Enter pet`s gender" required>
+
+        <label for="breed" class="loginlabel">
+            Breed:
+        </label>
+        <input type="text" id="breed" name="breed"
+               placeholder="Enter pet`s breed" required>
+
+        <label for="nickname" class="loginlabel">
+            Nickname:
+        </label>
+        <input type="text" id="nickname" name="nickname"
+               placeholder="Enter pet`s nickname" required>
+
+        <label for="diffs" class="loginlabel">
+            Differences:
+        </label>
+        <input type="text" id="diffs" name="diffs"
+               placeholder="Enter pet`s differences" required>
+
+        <div class="wrap">
+            <button type="submit" class="submitbutton">
+                Submit
+            </button>
         </div>
-      </nav>
-    </header>
-            <div class="main">
-                <form action="{{ url_for('add') }}" method="POST">
-                      <label for="myfile" class="loginlabel">
-                          Photos:
-                      </label>
-                      <input type="file" id="myfile" name="myfile" multiple>
-                      <label for="type" class="loginlabel">
-                          Type:
-                      </label>
-                      <input type="text" id="type" name="type"
-                          placeholder="Enter pet`s type" required>
-
-                      <label for="gender" class="loginlabel">
-                          Gender:
-                      </label>
-                      <input type="text" id="gender" name="gender"
-                          placeholder="Enter pet`s gender" required>
-
-                      <label for="breed" class="loginlabel">
-                          Breed:
-                      </label>
-                      <input type="text" id="breed" name="breed"
-                          placeholder="Enter pet`s breed" required>
-
-                      <label for="nickname" class="loginlabel">
-                          Nickname:
-                      </label>
-                      <input type="text" id="nickname" name="nickname"
-                          placeholder="Enter pet`s nickname" required>
-
-                      <label for="diffs" class="loginlabel">
-                          Differences:
-                      </label>
-                      <input type="text" id="diffs" name="diffs"
-                          placeholder="Enter pet`s differences" required>
-
-                      <div class="wrap">
-                          <button type="submit" class="submitbutton">
-                              Submit
-                          </button>
-                      </div>
-                </form>
-            </div>
-</body>
-</html>
+    </form>
+</div>
+{% endblock %}

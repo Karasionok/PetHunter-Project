@@ -1,0 +1,19 @@
+<header>
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo"><a href="#">PetHunter</a> </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contacts</a></li>
+                {% if current_user.is_authenticated %}
+                    <li>{{ current_user.full_name }}</li>
+                    <button class="signbutton"><a href="{{ url_for('logout') }}">Выйти</a></button>
+                {% else %}
+                    <button class="signbutton"><a href="/login">Sign In</a></button>
+                    <button class="signbutton"><a href="/register">Sign Up</a></button>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
